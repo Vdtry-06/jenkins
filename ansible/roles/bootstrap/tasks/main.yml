@@ -1,0 +1,21 @@
+- name: install update
+  apt:
+    update_cache: yes
+
+- name: create simone user
+  user:
+    name: simone
+    group: root
+
+- name: add ssh key for simone user
+  authorized_key:
+    user: simone
+    key: "{{ lookup('file', '/home/vdtry06/.ssh/ansible.pub') }}"
+
+- name: add sudoers file for simone
+  copy:
+    src: sudoer_simone
+    dest: /etc/sudoers.d/simone
+    owner: root
+    group: root
+    mode: 0440
