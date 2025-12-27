@@ -39,6 +39,18 @@ pipeline {
                 sh "docker push ${IMAGE_NAME}"
             }
         }
+
+        stage('Deploy web server') {
+            steps {
+                ansiblePlaybook credentialsId: 'ansible',
+                disableHostKeyChecking: true,
+                installation: 'ansible', // name of tool in Jenkins
+                inventory: './ansible/inventory', 
+                playbook: './ansible/playbooks/ansible.yaml',
+                vaultTmpPath: '',
+                // extras: "-t api_server -e DJANGO_IMAGE_VERSION=${env.TAG_NAME}"
+            }
+        }
     }
 
     post {
