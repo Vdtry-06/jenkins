@@ -1,0 +1,31 @@
+- name: Check if docker-compose.yml exists
+  stat:
+    path: /vdtry06-backend/flask-api/docker-compose.yml
+  register: compose_file
+
+- name: Run Docker Compose Down
+  shell:  sudo docker compose down
+  args:
+    chdir: /vdtry06-backend/flask-api
+  when: compose_file.stat.exists
+
+- name: Remove vdtry06-backend directory
+  file:
+    path: /vdtry06-backend
+    state: absent
+
+- name: Create vdtry06-backend directory
+  file:
+    path: /vdtry06-backend
+    state: directory
+    mode: '0755'
+
+- name: Copy flask-api directory to remote server
+  copy:
+    src: flask-api
+    dest: /vdtry06-backend
+
+- name: Run Docker Compose Up
+  shell:  sudo docker compose up -d
+  args:
+    chdir: /vdtry06-backend/flask-api
