@@ -9,9 +9,9 @@
 - hosts: all
   become: true
   roles:
-    - ../roles/bootstrap
+    # - ../roles/bootstrap
     # - ../roles/common
-    # - ../roles/backend
+    - ../roles/backend
 
 # - hosts: web
 #   become: true
