@@ -47,7 +47,7 @@ pipeline {
                 installation: 'ansible', // name of tool in Jenkins
                 inventory: './ansible/inventory', 
                 playbook: './ansible/playbooks/ansible.yaml',
-                vaultTmpPath: '',
+                vaultTmpPath: ''
                 // extras: "-t api_server -e DJANGO_IMAGE_VERSION=${env.TAG_NAME}"
             }
         }
