@@ -4,7 +4,7 @@ pipeline {
     environment {
         DOCKER_USERNAME = 'vdtry06'
         DOCKER_HUB_CREDENTIALS = 'dockerhub-acc'
-        IMAGE_NAME = "${DOCKER_USERNAME}/flask-sum-api:1.0"
+        IMAGE_NAME = "${DOCKER_USERNAME}/flask-sum-api:2.0"
         CONTAINER_NAME = "flask-test-container"
     }
 
@@ -32,23 +32,28 @@ pipeline {
         }
 
         stage('Push to Docker Hub') {
+            when {
+                expression { env.DOCKER_HUB_CREDENTIALS != '' }
+            }
             steps {
-                withCredentials([usernamePassword(credentialsId: 'docker-hub', passwordVariable: 'DOCKER_PASSWORD', usernameVariable: 'DOCKER_USERNAME')]) {
-                    sh 'docker login -u $DOCKER_USERNAME -p $DOCKER_PASSWORD'
+                withCredentials([usernamePassword(
+                    credentialsId: "${DOCKER_HUB_CREDENTIALS}", 
+                    usernameVariable: 'DOCKER_USERNAME', 
+                    passwordVariable: 'DOCKER_PASSWORD'
+                )]) {
+                    sh 'echo $DOCKER_PASSWORD | docker login -u $DOCKER_USERNAME --password-stdin'
+                    sh "docker push ${IMAGE_NAME}"
                 }
-                sh "docker push ${IMAGE_NAME}"
             }
         }
 
         stage('Deploy web server') {
             steps {
                 ansiblePlaybook credentialsId: 'ansible',
-                disableHostKeyChecking: true,
-                installation: 'ansible', // name of tool in Jenkins
-                inventory: './ansible/inventory', 
-                playbook: './ansible/playbooks/ansible.yaml',
-                vaultTmpPath: ''
-                // extras: "-t api_server -e DJANGO_IMAGE_VERSION=${env.TAG_NAME}"
+                                disableHostKeyChecking: true,
+                                installation: 'ansible',
+                                inventory: './ansible/inventory',
+                                playbook: './ansible/playbooks/ansible.yaml'
             }
         }
     }
@@ -57,11 +62,9 @@ pipeline {
         always {
             echo "Job Completed! Cleaning up resources..."
         }
-
         success {
             echo "Build & Test Passed. Image pushed to Docker Hub successfully!"
         }
-
         failure {
             echo "Job failed. Cleaning up unused Docker resources..."
         }
