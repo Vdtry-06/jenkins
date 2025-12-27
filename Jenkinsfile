@@ -4,7 +4,7 @@ pipeline {
     environment {
         DOCKER_USERNAME = 'vdtry06'
         DOCKER_HUB_CREDENTIALS = 'dockerhub-acc'
-        IMAGE_NAME = "${DOCKER_USERNAME}/flask-sum-api:1.0"
+        IMAGE_NAME = "${DOCKER_USERNAME}/flask-sum-api:2.0"
         CONTAINER_NAME = "flask-test-container"
     }
 
@@ -33,7 +33,7 @@ pipeline {
 
         stage('Push to Docker Hub') {
             steps {
-                withCredentials([usernamePassword(credentialsId: 'docker-acc', passwordVariable: 'DOCKER_PASSWORD', usernameVariable: 'DOCKER_USERNAME')]) {
+                withCredentials([usernamePassword(credentialsId: 'docker-hub', passwordVariable: 'DOCKER_PASSWORD', usernameVariable: 'DOCKER_USERNAME')]) {
                     sh 'docker login -u $DOCKER_USERNAME -p $DOCKER_PASSWORD'
                 }
                 sh "docker push ${IMAGE_NAME}"
