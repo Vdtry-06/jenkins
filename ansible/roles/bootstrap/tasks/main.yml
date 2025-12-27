@@ -10,7 +10,7 @@
 - name: add ssh key for simone user
   authorized_key:
     user: simone
-    key: "{{ lookup('file', '/home/vdtry06/.ssh/ansible.pub') }}"
+    key: "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAICLSOMD0h+MivDItMzOnLkWz4eHRVh9wtKCBloxIHX4S vdtry06@LAPTOP-INLUR8CU"
 
 - name: add sudoers file for simone
   copy:
