@@ -27,4 +27,5 @@ docker:x:108:vdtry06
         name: nginx
         state: stopped
       when: ansible_os_family == "Debian"
+      
 ```
