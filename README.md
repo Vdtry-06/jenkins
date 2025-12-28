@@ -6,6 +6,7 @@ docker:x:108:vdtry06
 
 # Dừng server
 
+```
 - name: Install Nginx on web remote server
   hosts: web
   become: true # Use sudo to run tasks as root
@@ -26,4 +27,4 @@ docker:x:108:vdtry06
         name: nginx
         state: stopped
       when: ansible_os_family == "Debian"
-
+```
