@@ -17,6 +17,9 @@ Dự án này triển khai một quy trình CI/CD hoàn chỉnh cho ứng dụng
 
 **Luồng hoạt động:** Code → Git → Jenkins (CI) → Docker Hub → Ansible (CD) → Production Servers
 
+**Pipeline:**
+![alt text](static/image10.png)
+
 ### Ứng dụng Demo
 - **Flask API**: API đơn giản thực hiện phép cộng hai số
 - **Endpoint**: `/add?num1=X&num2=Y`
