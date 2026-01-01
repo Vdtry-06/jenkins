@@ -1,0 +1,22 @@
+services:
+  jenkins:
+    container_name: jenkins_container
+    build: ./
+    restart: unless-stopped
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock
+      - /var/jenkins_data:/var/jenkins_home
+    ports:
+      - "8080:8080"
+      - "50000:50000"
+
+  jenkins2:
+    container_name: jenkins_container_2
+    build: ./
+    restart: unless-stopped
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock
+      - /var/jenkins_data_2:/var/jenkins_home
+    ports:
+      - "8081:8080"
+      - "50001:50000"
